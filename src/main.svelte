@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Timer from "../components/Timer.svelte";
+
   let foo: string;
 
   setInterval((): void => {
@@ -11,14 +13,4 @@
   <h1>Hello {foo}!</h1>
 </div>
 
-<style>
-  input {
-    background-color: yellow;
-    @apply hover:bg-red-900 rounded-md;
-  }
-
-  h1 {
-    background-color: blue;
-    @apply rounded-md p-10;
-  }
-</style>
+<Timer />

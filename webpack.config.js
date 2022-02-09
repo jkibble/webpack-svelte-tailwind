@@ -18,7 +18,7 @@ glob.sync("./src/**/*.svelte").forEach((file) => {
   const id = entry === "menu" ? "menu" : "app";
   const tpl = `data:text/javascript,
   import App from "./src/${entry}.svelte"; 
-  const app = new App({ target: document.getElementById("${entry}") }); 
+  const app = new App({ target: document.getElementById("${id}") });
   export default app;`;
 
   // create virtual entry for each file, including menu
