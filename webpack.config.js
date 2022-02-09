@@ -2,6 +2,9 @@ const path = require("path");
 const glob = require("glob");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const sveltePreprocess = require("svelte-preprocess");
+const tailwindcss = require("tailwindcss");
+const autoprefixer = require("autoprefixer");
 
 const mode = process.env.NODE_ENV || "development";
 const prod = mode === "production";
@@ -34,17 +37,19 @@ const files = glob.sync("./src/**/*.svelte").forEach((file) => {
 const plugins = [
   ...outputs,
   new MiniCssExtractPlugin({
-    filename: "assets/[name]-[hash].css",
+    filename: "css/[name]-[contenthash].css",
   }),
 ];
 
 module.exports = {
+  stats: "errors-warnings",
   entry: entries,
   plugins: plugins,
   output: {
     path: path.join(__dirname, "/public"),
-    filename: "assets/[name].[hash].js",
+    filename: "js/[name].[contenthash].js",
     clean: true,
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -54,11 +59,16 @@ module.exports = {
       },
       {
         test: /\.svelte$/,
+        exclude: /node_modules/,
         use: {
           loader: "svelte-loader",
           options: {
             emitCss: true,
-            hotReload: !prod,
+            preprocess: sveltePreprocess({
+              postcss: {
+                plugins: [tailwindcss, autoprefixer],
+              },
+            }),
           },
         },
       },
@@ -70,7 +80,4 @@ module.exports = {
   },
   mode,
   devtool: prod ? false : "source-map",
-  devServer: {
-    hot: true,
-  },
 };
