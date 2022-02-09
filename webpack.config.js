@@ -1,10 +1,10 @@
-const path = require("path");
-const glob = require("glob");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const sveltePreprocess = require("svelte-preprocess");
-const tailwindcss = require("tailwindcss");
-const autoprefixer = require("autoprefixer");
+import * as path from "path";
+import glob from "glob";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import sveltePreprocess from "svelte-preprocess";
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
 
 const mode = process.env.NODE_ENV || "development";
 const prod = mode === "production";
@@ -41,12 +41,12 @@ const plugins = [
   }),
 ];
 
-module.exports = {
+export default {
   stats: "errors-warnings",
   entry: entries,
   plugins: plugins,
   output: {
-    path: path.join(__dirname, "/public"),
+    path: path.join(path.resolve(), "/public"),
     filename: "js/[name].[contenthash].js",
     clean: true,
     publicPath: "/",
