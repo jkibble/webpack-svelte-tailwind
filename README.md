@@ -2,5 +2,6 @@
 
 Webpack setup with svelte and tailwind css
 
-I wanted to use vite because it's just so much easier to setup but it doesn't have the flexability I need
+Vite with rollup worked quite well until I wanted some more complex setups
 
+I could get it mostly working with vite and even just rollup to some degree but it was very kludgy. Thought I should give webpack and try and in a few hours this is what I came up with
