@@ -1,8 +1,8 @@
-<script lang="ts">
+<script>
   import Timer from "/components/Timer.svelte";
   import toasts from "/stores/toasts.js";
 
-  let foo: string = "random string";
+  let foo = "random string";
 
   const randomWord = () => {
     return Math.random().toString(36).slice(2);
