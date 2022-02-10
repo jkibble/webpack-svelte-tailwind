@@ -1,18 +1,22 @@
 <script lang="ts">
-  import Timer from "../components/Timer.svelte";
+  import Timer from "/components/Timer.svelte";
+  import toasts from "/stores/toasts.js";
 
-  let foo: string;
+  let foo: string = "random string";
 
-  setInterval((): void => {
-    foo = Math.random()
-      .toString(36)
-      .replace(/[^a-z]+/g, "");
-  }, 2000);
+  const randomWord = () => {
+    return Math.random().toString(36).slice(2);
+  };
 
   const addToast = () => {
-    const content = Math.random()
-      .toString(36)
-      .replace(/[^a-z]+/g, "");
+    let content = [];
+    let max = Math.floor(Math.random() * (20 - 2 + 1) + 2);
+
+    for (let i = 0; i < max; i++) {
+      content.push(randomWord());
+    }
+
+    toasts.add(content.join(" "));
   };
 </script>
 

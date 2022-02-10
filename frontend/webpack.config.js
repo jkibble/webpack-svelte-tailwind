@@ -5,6 +5,7 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import sveltePreprocess from "svelte-preprocess";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
+import fs from "fs";
 
 const mode = process.env.NODE_ENV || "development";
 const prod = mode === "production";
@@ -15,27 +16,45 @@ let outputs = []; // used to hold all output html files templates
 // generate entry points and output files templates
 glob.sync("./src/**/*.svelte").forEach((file) => {
   const entry = file.replace(/\.\/src\/([a-zA-Z_-]+)\.svelte/, "$1");
-  const id = entry === "menu" || entry === "toasts" ? entry : "app";
   const filename = entry === "index" ? "index.html" : `${entry}/index.html`;
   const tpl = `data:text/javascript,
-  import App from "./src/${entry}.svelte";
-  const app = new App({ target: document.getElementById("${id}") });
-  export default app;`;
+  import App from "/dev/shm/${entry}.svelte";
+  export default new App({ target: document.getElementById("app") });`;
+
+  const thing = `
+  <script>
+    import Menu from "/components/menu.svelte";
+    import Main from "/src/${entry}.svelte";
+    import Toasts from "/components/toasts.svelte";
+    import "/src/style.css";
+  </script>
+
+  <header>
+    <nav>
+      <Menu />
+    </nav>
+  </header>
+  <main>
+    <Main />
+  </main>
+  <footer>
+    here is the footer
+    <Toasts />
+  </footer>`;
+
+  fs.writeFileSync(`/dev/shm/${entry}.svelte`, thing);
 
   // create virtual entry for each file, including menu
   entries[entry] = tpl.replaceAll("\n", ""); // webpack needs to have a data:text/javascript format
 
-  // don't create a separate output file for the menu
-  if (entry !== "menu" && entry !== "toasts") {
-    outputs.push(
-      // generates html files for each entry point and rewrites the script / css links
-      new HtmlWebpackPlugin({
-        chunks: ["menu", "toasts", entry], // include menu and template file
-        filename: filename, // output file name
-        template: "./layout.tpl", // layout template
-      })
-    );
-  }
+  outputs.push(
+    // generates html files for each entry point and rewrites the script / css links
+    new HtmlWebpackPlugin({
+      chunks: [entry], // include menu and template file
+      filename: filename, // output file name
+      template: "./layout.tpl", // layout template
+    })
+  );
 });
 
 // merge all the plugins
@@ -54,6 +73,9 @@ export default {
     errors: true,
     errorDetails: true,
   },
+  resolve: {
+    modules: [path.resolve("node_modules"), path.resolve("./")],
+  },
   entry: entries, // defined above
   plugins: plugins, // defined above
   output: {
@@ -65,6 +87,10 @@ export default {
   // only loading svelte files and css currently, no ts, assets, etc
   module: {
     rules: [
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
       {
         test: /\.svelte$/,
         exclude: /node_modules/,
