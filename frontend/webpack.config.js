@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 import glob from "glob";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -15,9 +15,10 @@ let outputs = []; // used to hold all output html files templates
 // generate entry points and output files templates
 glob.sync("./src/**/*.svelte").forEach((file) => {
   const entry = file.replace(/\.\/src\/([a-zA-Z_-]+)\.svelte/, "$1");
-  const id = entry === "menu" ? "menu" : "app";
+  const id = entry === "menu" || entry === "toasts" ? entry : "app";
+  const filename = entry === "index" ? "index.html" : `${entry}/index.html`;
   const tpl = `data:text/javascript,
-  import App from "./src/${entry}.svelte"; 
+  import App from "./src/${entry}.svelte";
   const app = new App({ target: document.getElementById("${id}") });
   export default app;`;
 
@@ -25,11 +26,12 @@ glob.sync("./src/**/*.svelte").forEach((file) => {
   entries[entry] = tpl.replaceAll("\n", ""); // webpack needs to have a data:text/javascript format
 
   // don't create a separate output file for the menu
-  if (entry !== "menu.svelte") {
+  if (entry !== "menu" && entry !== "toasts") {
     outputs.push(
+      // generates html files for each entry point and rewrites the script / css links
       new HtmlWebpackPlugin({
-        chunks: ["menu", entry], // include menu and template file
-        filename: `${entry}.html`, // output file name
+        chunks: ["menu", "toasts", entry], // include menu and template file
+        filename: filename, // output file name
         template: "./layout.tpl", // layout template
       })
     );
@@ -40,21 +42,27 @@ glob.sync("./src/**/*.svelte").forEach((file) => {
 const plugins = [
   ...outputs,
   new MiniCssExtractPlugin({
-    filename: "css/[name]-[contenthash].css", // all css files put here
+    filename: "assets/css/[name]-[contenthash].css", // all css files put here
   }),
 ];
 
 export default {
-  stats: "errors-warnings", //  less verbose, show errors and warnings
+  stats: {
+    colors: true,
+    preset: "minimal",
+    warnings: true,
+    errors: true,
+    errorDetails: true,
+  },
   entry: entries, // defined above
   plugins: plugins, // defined above
   output: {
-    path: path.join(path.resolve(), "/public"), // output path
-    filename: "js/[name].[contenthash].js", // all js files put here
+    path: path.join(path.resolve(), "../public"), // output path
+    filename: "assets/js/[name].[contenthash].js", // all js files put here
     clean: true, // delete all files in the output directory before each build
     publicPath: "/", // absolute path to the output files
   },
-  // only loading svelte files and css currently, no ts, images, fonts, etc
+  // only loading svelte files and css currently, no ts, assets, etc
   module: {
     rules: [
       {
@@ -76,6 +84,11 @@ export default {
       {
         test: /\.css$/i,
         use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
+      },
+      {
+        test: /\.ts?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
       },
     ],
   },
