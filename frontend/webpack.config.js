@@ -16,10 +16,10 @@ let outputs = []; // used to hold all output html files templates
 // generate entry points and output files templates
 glob.sync("src/**/*.svelte").forEach((file) => {
   const entry = file.replace(/src\/([a-zA-Z_-]+)\.svelte/, "$1");
-  const filename = entry === "index" ? "index.html" : `${entry}/index.html`;
-  const tpl = `data:text/javascript,
-  import App from "/dev/shm/${entry}.svelte";
-  export default new App({ target: document.getElementById("app") });`;
+
+  const tpl = `import App from "./${entry}.svelte"; export default new App({ target: document.getElementById("app") });`;
+
+  fs.writeFileSync(`/dev/shm/${entry}.js`, tpl);
 
   // create entry point template loaded above
   fs.writeFileSync(
@@ -39,18 +39,19 @@ glob.sync("src/**/*.svelte").forEach((file) => {
       <Main />
     </main>
     <footer>
+      footer content goes here
       <Toasts />
     </footer>`
   );
 
   // create virtual entry for each file, including menu
-  entries[entry] = tpl.replaceAll("\n", ""); // webpack needs to have a data:text/javascript format
+  entries[entry] = `/dev/shm/${entry}.js`; // webpack needs to have a data:text/javascript format
 
   // generates html files for each entry point and rewrites the script / css links
   outputs.push(
     new HtmlWebpackPlugin({
       chunks: [entry], // include menu and template file
-      filename: filename, // output file name
+      filename: `${entry}/index.html`, // output file name
       template: "./layout.tpl", // layout template
     })
   );
