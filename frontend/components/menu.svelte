@@ -12,7 +12,7 @@
   });
 </script>
 
-<div class="flex w-full items-center gap-4 bg-slate-500 p-2 text-white">
+<nav class="flex w-full items-center gap-4 bg-slate-500 p-2 text-white">
   <svg
     width="25"
     height="25"
@@ -39,7 +39,7 @@
       <li><a href={item.href}>{item.title}</a></li>
     {/each}
   </ul>
-</div>
+</nav>
 
 <style>
   li {

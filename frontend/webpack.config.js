@@ -9,6 +9,7 @@ import fs from "fs";
 
 const mode = process.env.NODE_ENV || "development";
 const prod = mode === "production";
+const template = fs.readFileSync("./templates/main.svelte", "utf8");
 
 let entries = {}; // used to hold all entry points templates
 let outputs = []; // used to hold all output html files templates
@@ -16,7 +17,6 @@ let outputs = []; // used to hold all output html files templates
 // generate entry points and output files templates
 glob.sync("src/**/*.svelte").forEach((file) => {
   const entry = file.replace(/src\/([a-zA-Z_-]+)\.svelte/, "$1");
-
   const tpl = `import App from "./${entry}.svelte"; export default new App({ target: document.getElementById("app") });`;
 
   fs.writeFileSync(`/dev/shm/${entry}.js`, tpl);
@@ -24,24 +24,7 @@ glob.sync("src/**/*.svelte").forEach((file) => {
   // create entry point template loaded above
   fs.writeFileSync(
     `/dev/shm/${entry}.svelte`,
-    `<script>
-      import Menu from "/components/menu.svelte";
-      import Main from "/${file}";
-      import Toasts from "/components/toasts.svelte";
-      import "/src/style.css";
-    </script>
-    <header>
-      <nav>
-        <Menu />
-      </nav>
-    </header>
-    <main>
-      <Main />
-    </main>
-    <footer>
-      footer content goes here
-      <Toasts />
-    </footer>`
+    template.replace("{file}", file)
   );
 
   // create virtual entry for each file, including menu
@@ -52,7 +35,7 @@ glob.sync("src/**/*.svelte").forEach((file) => {
     new HtmlWebpackPlugin({
       chunks: [entry], // include menu and template file
       filename: `${entry}/index.html`, // output file name
-      template: "./layout.tpl", // layout template
+      template: "./templates/layout.tpl", // layout template
     })
   );
 });
@@ -73,6 +56,11 @@ export default {
     errors: true,
     errorDetails: true,
   },
+  optimization: {
+    removeAvailableModules: false,
+    removeEmptyChunks: false,
+    splitChunks: false,
+  },
   resolve: {
     modules: [path.resolve("node_modules"), path.resolve("./")],
   },
@@ -83,14 +71,11 @@ export default {
     filename: "assets/js/[name].[contenthash].js", // all js files put here
     clean: true, // delete all files in the output directory before each build
     publicPath: "/", // absolute path to the output files
+    pathinfo: false,
   },
   // only loading svelte files and css currently, no ts, assets, etc
   module: {
     rules: [
-      {
-        test: /\.html$/i,
-        loader: "html-loader",
-      },
       {
         test: /\.svelte$/,
         exclude: /node_modules/,
@@ -119,5 +104,4 @@ export default {
     ],
   },
   mode, // development or production
-  devtool: prod ? false : "source-map", // generate source maps if in development
 };
