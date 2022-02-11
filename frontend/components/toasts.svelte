@@ -10,7 +10,7 @@
     <output
       in:slide={{ duration: 500 }}
       out:fade={{ duration: 500 }}
-      class="mb-4 flex w-fit items-center rounded-md bg-slate-400/80 p-3 text-sm font-semibold text-white sm:max-w-[90vw] md:max-w-prose md:text-base"
+      class="mb-4 flex w-fit items-center rounded-md border border-white bg-slate-600/80 p-3 text-sm font-semibold text-white sm:max-w-[90vw] md:max-w-prose md:text-base"
     >
       <span class="mr-3 h-5 w-5 flex-shrink-0">
         <svg

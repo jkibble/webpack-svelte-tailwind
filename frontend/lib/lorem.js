@@ -179,15 +179,72 @@ const words = [
   "cras",
 ];
 
-const punctuation = [",", ".", "!", "?", ";", ":", '"', "(", ")"];
+const punctuation = [",", ".", "!", "?", ";", ":", '"', "(", ")", "'"];
+
+const emjojis = [
+  "👀",
+  "🙌",
+  "🙏",
+  "➕",
+  "👏",
+  "💡",
+  "🎯",
+  "👋",
+  "👍",
+  "🎉",
+  "📣",
+  "⚪",
+  "🔵",
+  "🔴",
+  "😁",
+  "🤣",
+  "😃",
+  "😊",
+  "😅",
+  "😉",
+  "😳",
+  "😋",
+  "😎",
+  "😛",
+  "🌀",
+  "🌁",
+  "🌊",
+  "🐈",
+  "🐘",
+  "🐼",
+  "🐍",
+  "🐦",
+  "🐤",
+  "🐣",
+  "🏠",
+  "🏡",
+  "🏫",
+  "🏢",
+  "🏤",
+  "🇧🇹",
+  "🇧🇻",
+  "🇧🇼",
+  "🇧🇾",
+  "🇧🇿",
+  "🇨🇦",
+];
 
 const addPunctuation = (word) => {
-  const chance = Math.floor(Math.random() * 10 + 1) > 7;
-  const punc = punctuation[Math.floor(Math.random() * punctuation.length)];
+  const chance = Math.floor(Math.random() * 20 + 1);
 
-  if (chance) {
+  if (chance === 20) {
+    return `${word} ${emjojis[Math.floor(Math.random() * emjojis.length)]}`;
+  }
+
+  if (chance > 17) {
+    const punc = punctuation[Math.floor(Math.random() * punctuation.length)];
+
     if (punc === '"') {
       return `${punc}${word}${punc}`;
+    }
+
+    if (punc === "'") {
+      return `${word}'s`;
     }
 
     if (punc === "(" || punc === ")") {

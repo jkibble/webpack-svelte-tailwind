@@ -1,11 +1,19 @@
 <script>
   import lorem from "/lib/lorem.js";
+  import toast from "/stores/toasts.js";
+
   let cards = [];
 
   for (let i = 0; i < 10; i++) {
     cards.push({ title: lorem(5), body: lorem(20) });
   }
+
+  const addToast = () => {
+    toast.add(lorem(5));
+  };
 </script>
+
+<button class="rounded-md bg-red-400 p-4" on:click={addToast}>Add Toast</button>
 
 <section class="cards m-3 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
   {#each cards as card}
