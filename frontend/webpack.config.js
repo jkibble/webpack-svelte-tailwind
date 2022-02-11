@@ -73,23 +73,28 @@ export default {
     publicPath: "/", // absolute path to the output files
     pathinfo: false,
   },
-  // only loading svelte files and css currently, no ts, assets, etc
+
   module: {
     rules: [
       {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        loader: "file-loader",
+        options: {
+          name: "[path]/img/[contenthash].[ext]",
+        },
+      },
+      {
         test: /\.svelte$/,
         exclude: /node_modules/,
-        use: {
-          loader: "svelte-loader",
-          options: {
-            emitCss: true, // will generate separate css file
-            preprocess: sveltePreprocess({
-              // use tailwindcss, process css first before compiling
-              postcss: {
-                plugins: [tailwindcss, autoprefixer],
-              },
-            }),
-          },
+        loader: "svelte-loader",
+        options: {
+          emitCss: true, // will generate separate css file
+          preprocess: sveltePreprocess({
+            // use tailwindcss, process css first before compiling
+            postcss: {
+              plugins: [tailwindcss, autoprefixer],
+            },
+          }),
         },
       },
       {
@@ -98,7 +103,7 @@ export default {
       },
       {
         test: /\.ts?$/,
-        use: "ts-loader",
+        loader: "ts-loader",
         exclude: /node_modules/,
       },
     ],

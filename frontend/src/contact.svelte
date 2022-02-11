@@ -10,7 +10,7 @@
 
   const addToast = () => {
     let content = [];
-    let max = Math.floor(Math.random() * (20 - 2 + 1) + 2);
+    let max = Math.floor(Math.random() * (10 - 2 + 1) + 2);
 
     for (let i = 0; i < max; i++) {
       content.push(randomWord());
