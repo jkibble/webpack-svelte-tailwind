@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { initializeApp } from "firebase/app";
-  import { firstname, lastname, email, title } from "/lib/lorem.js";
+  import faker from "/lib/faker.js";
   import toast from "/stores/toasts.js";
   import {
     getFirestore,
@@ -25,10 +25,10 @@
   const addUser = async () => {
     const col = collection(db, "users");
     const data = {
-      email: email(),
-      firstname: firstname(),
-      lastname: lastname(),
-      title: title(),
+      firstname: faker.firstname(),
+      lastname: faker.lastname(),
+      email: faker.email(),
+      title: faker.title(),
     };
 
     await addDoc(col, {

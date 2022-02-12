@@ -1,15 +1,15 @@
 <script>
-  import lorem from "/lib/lorem.js";
+  import faker from "/lib/faker.js";
   import toast from "/stores/toasts.js";
 
   let cards = [];
 
   for (let i = 0; i < 10; i++) {
-    cards.push({ title: lorem(5), body: lorem(20) });
+    cards.push({ title: faker.lorem(5), body: faker.lorem(20) });
   }
 
   const addToast = () => {
-    toast.add(lorem(5));
+    toast.add(faker.lorem(5));
   };
 </script>
 

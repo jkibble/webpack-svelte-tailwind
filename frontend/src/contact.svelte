@@ -1,14 +1,14 @@
 <script>
   import Timer from "/components/Timer.svelte";
   import toasts from "/stores/toasts.js";
-  import lorem from "/lib/lorem.js";
+  import faker from "/lib/faker.js";
 
   let foo = "random string";
 
   const addToast = () => {
     let max = Math.floor(Math.random() * (20 - 2 + 1) + 2);
 
-    toasts.add(lorem(max));
+    toasts.add(faker.lorem(max));
   };
 </script>
 

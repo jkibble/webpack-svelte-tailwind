@@ -1,5 +1,5 @@
 {
-  "tld": ["com", "biz", "info", "net", "org", "edu"],
+  "tld": ["com", "biz", "info", "net", "org", "edu", "dev"],
   "lorem": [
     "alias",
     "consequatur",
