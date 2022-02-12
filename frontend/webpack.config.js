@@ -109,4 +109,5 @@ export default {
     ],
   },
   mode, // development or production
+  devtool: prod ? "" : "source-map",
 };
