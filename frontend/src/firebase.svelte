@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from "svelte";
   import { initializeApp } from "firebase/app";
   import { firstname, lastname, email, title } from "/lib/lorem.js";
   import toast from "/stores/toasts.js";
@@ -7,17 +8,14 @@
     collection,
     addDoc,
     getDoc,
+    query,
+    where,
+    getDocs,
     connectFirestoreEmulator,
   } from "firebase/firestore";
 
   const firebaseApp = initializeApp({
-    // apiKey: "AIzaSyAyQDVVRpHVFTfNCqpjccY02WIcG70wAhY",
-    // authDomain: "helical-beaker-330904.firebaseapp.com",
     projectId: "helical-beaker-330904",
-    // storageBucket: "helical-beaker-330904.appspot.com",
-    // messagingSenderId: "566587270353",
-    // appId: "1:566587270353:web:b6fe4ab1f58f045a8e11f0",
-    // measurementId: "G-EXV042XVN4",
     databaseURL: "http://localhost:8080",
   });
 
@@ -44,6 +42,35 @@
       `User <span class="text-blue-400">${data.firstname} ${data.lastname}</span> <span class="text-lime-400">${data.email}</span> has been added`
     );
   };
+
+  const q = query(collection(db, "users"));
+
+  const documents = getDocs(collection(db, "users")).then((docs) => {
+    return docs.forEach((data) => {
+      console.log(data.data());
+    });
+  });
 </script>
 
 <button class="bg-green-400 p-5" on:click={addUser}>Add To Database</button>
+
+{#await documents}
+  <div>no docs yet</div>
+{:then docs}
+  <table>
+    <tr>
+      <td>First</td>
+      <td>Last</td>
+      <td>Title</td>
+      <td>Email</td>
+    </tr>
+    {#each docs as doc}
+      <tr>
+        <td>{doc.data().firstname}</td>
+        <td>{doc.data().lastname}</td>
+        <td>{doc.data().title}</td>
+        <td>{doc.data().email}</td>
+      </tr>
+    {/each}
+  </table>
+{/await}
