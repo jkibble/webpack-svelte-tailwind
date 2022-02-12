@@ -29,7 +29,7 @@
           />
         </svg>
       </span>
-      <span>{toast}</span>
+      <span>{@html toast}</span>
     </output>
   {/each}
 </section>
