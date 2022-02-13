@@ -32,48 +32,44 @@ class faker {
       .replace(/(?:^|\s+)([a-z])/g, (l) => l.toUpperCase());
   }
 
-  addPunctuation(word) {
-    if (this.randomChance(10)) {
-      return `${word} ${this.randomElement("emoji")}`;
+  punctuation(word) {
+    const punc = this.randomElement("punctuation");
+
+    if (punc === '"') {
+      return `"${word}"`;
     }
 
-    if (this.randomChance(30)) {
-      const punc = this.randomElement("punctuation");
-
-      if (punc === '"') {
-        return `${punc}${word}${punc}`;
-      }
-
-      if (punc === "'") {
-        return `${word}'s`;
-      }
-
-      if (punc === "(" || punc === ")") {
-        return `(${word})`;
-      }
-
-      return `${word}${punc}`;
+    if (punc === "'") {
+      return `${word}'s`;
     }
 
-    return word;
+    if (punc === "(" || punc === ")") {
+      return `(${word})`;
+    }
+
+    return `${word}${punc}`;
   }
 
   lorem(numWords) {
-    let result = "";
+    let result = [];
 
     for (let i = 0; i < numWords; i++) {
-      const word = this.randomElement("lorem");
+      let word = this.randomElement("lorem");
 
-      if (result.length > 10 && this.randomChance(50)) {
-        result += ` ${this.addPunctuation(word)}`;
+      if (result.length >= 5 && this.randomChance(30)) {
+        result.push(this.punctuation(word));
       } else {
-        result += ` ${word}`;
+        result.push(word);
+      }
+
+      if (this.randomChance(2)) {
+        result.push(this.emoji());
       }
     }
 
     return result
-      .trim()
-      .toLowerCase()
+      .join(" ")
+      .replace(/\s+[,.?!]/, "")
       .replace(/(^\s*\w|[\.\!\?]\s*\w)/g, (l) => l.toUpperCase());
   }
 
