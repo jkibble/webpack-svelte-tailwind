@@ -18,6 +18,20 @@ class faker {
     return this.randomNumberBetween(0, 100) <= chance;
   }
 
+  jargon() {
+    const jargon = [];
+
+    jargon.push(this.randomElement("adverb"));
+    jargon.push(this.randomElement("verb"));
+    jargon.push(this.randomElement("noun"));
+    jargon.push(this.randomElement("adjective"));
+    jargon.push(this.randomElement("buzz"));
+
+    return jargon
+      .join(" ")
+      .replace(/(?:^|\s+)([a-z])/g, (l) => l.toUpperCase());
+  }
+
   addPunctuation(word) {
     if (this.randomChance(10)) {
       return `${word} ${this.randomElement("emjoji")}`;
@@ -60,9 +74,7 @@ class faker {
     return result
       .trim()
       .toLowerCase()
-      .replace(/(^\s*\w|[\.\!\?]\s*\w)/g, function (c) {
-        return c.toUpperCase();
-      });
+      .replace(/(^\s*\w|[\.\!\?]\s*\w)/g, (l) => l.toUpperCase());
   }
 
   firstname() {
