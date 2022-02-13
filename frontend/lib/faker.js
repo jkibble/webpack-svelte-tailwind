@@ -5,23 +5,25 @@ class faker {
   words = data;
   emailUser = { first: "", last: "" };
 
+  randomNumberBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
   randomElement(type) {
     const list = this.words[type];
     return list[Math.floor(Math.random() * list.length)];
   }
 
-  randomChance(skew) {
-    return Math.floor(Math.random() * skew + 1);
+  randomChance(chance) {
+    return this.randomNumberBetween(0, 100) <= chance;
   }
 
   addPunctuation(word) {
-    const chance = this.randomChance(20);
-
-    if (chance === 20) {
+    if (this.randomChance(10)) {
       return `${word} ${this.randomElement("emjoji")}`;
     }
 
-    if (chance > 17) {
+    if (this.randomChance(30)) {
       const punc = this.randomElement("punctuation");
 
       if (punc === '"') {
@@ -48,7 +50,7 @@ class faker {
     for (let i = 0; i < numWords; i++) {
       const word = this.randomElement("lorem");
 
-      if (numWords > 5 && result.length > 10) {
+      if (result.length > 10 && this.randomChance(50)) {
         result += ` ${this.addPunctuation(word)}`;
       } else {
         result += ` ${word}`;
@@ -83,25 +85,40 @@ class faker {
   }
 
   username() {
-    const first = this.emailUser.first
-      ? this.emailUser.first
-      : this.firstname();
-    const last = this.emailUser.last ? this.emailUser.last : this.lastname();
-    const chance = this.randomChance(30);
+    let first = this.emailUser.first ? this.emailUser.first : this.firstname();
+    let last = this.emailUser.last ? this.emailUser.last : this.lastname();
 
-    if (chance > 5 && chance < 10) {
-      return `${last}${this.randomChance(10)}`;
+    if (this.randomChance(30)) {
+      return `${first.substring(0, 1)}${last}`;
     }
 
-    if (chance > 10 && chance < 20) {
+    if (this.randomChance(30)) {
       return `${first}.${last.substring(0, 1)}`;
     }
 
-    if (chance > 20 && chance < 27) {
-      return `${first}.${last}`;
+    if (this.randomChance(30)) {
+      return `${first.substring(0, 3)}${last.substring(0, 3)}`;
     }
 
-    return `${first.substring(0, 1)}${last}`;
+    if (this.randomChance(10)) {
+      first = this.randomElement("adjective");
+      last = this.randomElement("noun");
+    }
+
+    if (this.randomChance(5)) {
+      first = this.randomElement("badname");
+      last = this.randomElement("verb");
+    }
+
+    if (this.randomChance(30)) {
+      return `${last}.${first}${this.randomNumberBetween(5, 21)}`;
+    }
+
+    if (this.randomChance(30)) {
+      return `${first}.${last}${this.randomNumberBetween(3, 75)}`;
+    }
+
+    return `${first}${last}`;
   }
 
   email() {
