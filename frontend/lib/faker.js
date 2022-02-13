@@ -34,7 +34,7 @@ class faker {
 
   addPunctuation(word) {
     if (this.randomChance(10)) {
-      return `${word} ${this.randomElement("emjoji")}`;
+      return `${word} ${this.randomElement("emoji")}`;
     }
 
     if (this.randomChance(30)) {
@@ -100,6 +100,10 @@ class faker {
     title.push(this.randomElement("title"));
 
     return title.join(" ").replace(/(?:^|\s+)([a-z])/g, (l) => l.toUpperCase());
+  }
+
+  emoji() {
+    return this.randomElement("emoji");
   }
 
   username() {
