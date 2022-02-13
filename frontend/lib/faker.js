@@ -93,7 +93,13 @@ class faker {
   }
 
   title() {
-    return this.randomElement("title");
+    const title = [];
+
+    title.push(this.randomElement("noun"));
+    title.push(this.randomElement("verb"));
+    title.push(this.randomElement("title"));
+
+    return title.join(" ").replace(/(?:^|\s+)([a-z])/g, (l) => l.toUpperCase());
   }
 
   username() {
