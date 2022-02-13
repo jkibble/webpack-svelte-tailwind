@@ -85,7 +85,7 @@ class faker {
     const domain = this.lastname().replace(/[^a-zA-Z]+/, "");
     const tld = this.randomElement("tld");
 
-    return `${domain}.${tld}`.toLocaleLowerCase();
+    return `${domain}.${tld}`.toLowerCase();
   }
 
   title() {
@@ -145,7 +145,7 @@ class faker {
 
     this.emailUser = { first: "", last: "" };
 
-    return `${user}@${domainname}`.toLocaleLowerCase();
+    return `${user}@${domainname}`.toLowerCase();
   }
 }
 
