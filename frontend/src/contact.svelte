@@ -3,10 +3,10 @@
   import toasts from "/stores/toasts.js";
   import faker from "/lib/faker.js";
 
-  let foo = "random string";
+  let foo = faker.lorem(2);
 
   const addToast = () => {
-    let max = Math.floor(Math.random() * (20 - 2 + 1) + 2);
+    const max = Math.floor(Math.random() * (20 - 2 + 1) + 2);
 
     toasts.add(faker.lorem(max));
   };

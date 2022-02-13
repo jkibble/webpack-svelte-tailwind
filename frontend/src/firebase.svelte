@@ -7,9 +7,7 @@
     getFirestore,
     collection,
     addDoc,
-    getDoc,
     query,
-    where,
     getDocs,
     connectFirestoreEmulator,
   } from "firebase/firestore";
