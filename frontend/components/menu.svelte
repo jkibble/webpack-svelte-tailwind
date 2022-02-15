@@ -1,6 +1,7 @@
 <script>
   import menu from "/stores/menu.js";
   import logo from "/assets/logo.svg";
+  import Modal from "/components/modal.svelte";
 
   const items = [
     { href: "/home", title: "Home" },
@@ -8,12 +9,15 @@
     { href: "/contact", title: "Contact" },
     { href: "/dashboard", title: "Dashboard" },
     { href: "/app", title: "App" },
-    { href: "/login", title: "Login" },
+    { title: "Login", component: Modal },
+    { href: "/logout", title: "Logout" },
   ];
 
   items.forEach((item) => {
     menu.addItem(item);
   });
+
+  let modalOpen = false;
 </script>
 
 <nav
@@ -25,7 +29,18 @@
     </li>
     {#each $menu as item}
       <li class="m-0 rounded-md bg-inherit py-1 px-2 hover:bg-slate-500">
-        <a href={item.href}>{item.title}</a>
+        {#if item.href}
+          <a href={item.href}>{item.title}</a>
+        {:else}
+          <button on:click={() => (modalOpen = true)}>
+            {item.title}
+          </button>
+          <svelte:component
+            this={item.component}
+            title="login"
+            bind:open={modalOpen}
+          />
+        {/if}
       </li>
     {/each}
   </ul>
