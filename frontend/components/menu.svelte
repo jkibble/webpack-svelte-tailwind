@@ -7,7 +7,7 @@
     { href: "/about", title: "About" },
     { href: "/contact", title: "Contact" },
     { href: "/dashboard", title: "Dashboard" },
-    { href: "/firebase", title: "Firebase" },
+    { href: "/app", title: "App" },
     { href: "/login", title: "Login" },
   ];
 

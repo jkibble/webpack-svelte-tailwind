@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "module": "es6",
+    "moduleResolution": "node",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es6"
+    "target": "es6",
+    "allowSyntheticDefaultImports": true
   },
   "compileOnSave": true,
   "include": [
