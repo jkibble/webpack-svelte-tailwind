@@ -1,11 +1,13 @@
 import * as functions from "firebase-functions";
+import express from "express";
+const app = express();
 
 const randomWord = () => {
   return Math.random().toString(36).slice(2);
 };
 
-export const table = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", { structuredData: true });
+app.get("/table", (req, res) => {
+  functions.logger.info("Hello logs from express!", { structuredData: true });
   let body = [];
   let header = [];
 
@@ -21,5 +23,7 @@ export const table = functions.https.onRequest((request, response) => {
     body.push(row);
   }
 
-  response.send({ header: header, body: body });
+  res.send({ header: header, body: body });
 });
+
+export const index = functions.https.onRequest(app);
