@@ -9,8 +9,7 @@ class faker {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  randomElement(type) {
-    const list = this.words[type];
+  randomElement(list) {
     return list[Math.floor(Math.random() * list.length)];
   }
 
@@ -21,11 +20,11 @@ class faker {
   jargon() {
     const jargon = [];
 
-    jargon.push(this.randomElement("adverb"));
-    jargon.push(this.randomElement("verb"));
-    jargon.push(this.randomElement("noun"));
-    jargon.push(this.randomElement("adjective"));
-    jargon.push(this.randomElement("buzz"));
+    jargon.push(this.randomElement(this.words["adverb"]));
+    jargon.push(this.randomElement(this.words["verb"]));
+    jargon.push(this.randomElement(this.words["noun"]));
+    jargon.push(this.randomElement(this.words["adjective"]));
+    jargon.push(this.randomElement(this.words["buzz"]));
 
     return jargon
       .join(" ")
@@ -33,7 +32,7 @@ class faker {
   }
 
   punctuation(word) {
-    const punc = this.randomElement("punctuation");
+    const punc = this.randomElement(this.words["punctuation"]);
 
     if (punc === '"') {
       return `"${word}"`;
@@ -54,7 +53,7 @@ class faker {
     let result = [];
 
     for (let i = 0; i < numWords; i++) {
-      let word = this.randomElement("lorem");
+      let word = this.randomElement(this.words["lorem"]);
 
       if (result.length >= 5 && this.randomChance(30)) {
         result.push(this.punctuation(word));
@@ -74,16 +73,16 @@ class faker {
   }
 
   firstname() {
-    return (this.emailUser.first = this.randomElement("first"));
+    return (this.emailUser.first = this.randomElement(this.words["first"]));
   }
 
   lastname() {
-    return (this.emailUser.last = this.randomElement("last"));
+    return (this.emailUser.last = this.randomElement(this.words["last"]));
   }
 
   domain() {
     const domain = this.lastname().replace(/[^a-zA-Z]+/, "");
-    const tld = this.randomElement("tld");
+    const tld = this.randomElement(this.words["tld"]);
 
     return `${domain}.${tld}`.toLowerCase();
   }
@@ -91,15 +90,15 @@ class faker {
   title() {
     const title = [];
 
-    title.push(this.randomElement("noun"));
-    title.push(this.randomElement("verb"));
-    title.push(this.randomElement("title"));
+    title.push(this.randomElement(this.words["noun"]));
+    title.push(this.randomElement(this.words["verb"]));
+    title.push(this.randomElement(this.words["title"]));
 
     return title.join(" ").replace(/(?:^|\s+)([a-z])/g, (l) => l.toUpperCase());
   }
 
   emoji() {
-    return this.randomElement("emoji");
+    return this.randomElement(this.words["emoji"]);
   }
 
   username() {
@@ -119,13 +118,13 @@ class faker {
     }
 
     if (this.randomChance(10)) {
-      first = this.randomElement("adjective");
-      last = this.randomElement("noun");
+      first = this.randomElement(this.words["adjective"]);
+      last = this.randomElement(this.words["noun"]);
     }
 
     if (this.randomChance(5)) {
-      first = this.randomElement("badname");
-      last = this.randomElement("verb");
+      first = this.randomElement(this.words["badname"]);
+      last = this.randomElement(this.words["verb"]);
     }
 
     if (this.randomChance(30)) {
