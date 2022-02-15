@@ -8,6 +8,7 @@
     { href: "/contact", title: "Contact" },
     { href: "/dashboard", title: "Dashboard" },
     { href: "/firebase", title: "Firebase" },
+    { href: "/login", title: "Login" },
   ];
 
   items.forEach((item) => {
