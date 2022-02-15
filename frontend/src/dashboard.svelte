@@ -16,7 +16,7 @@
 <button class="rounded-md bg-red-400 p-4" on:click={addToast}>Add Toast</button>
 
 <section class="cards m-3 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-  {#each cards as card}
+  {#each cards as card, i}
     <div class="rounded-md bg-slate-700 p-2 text-white">
       <div class="p-2 text-center font-semibold drop-shadow">
         {card.title}
@@ -26,7 +26,7 @@
         <img
           width="150"
           height="200"
-          src="https://picsum.photos/150/200"
+          src="https://picsum.photos/{150 + i}/{200 + i}"
           alt="lorem"
           class="mx-3 rounded-sm"
         />
